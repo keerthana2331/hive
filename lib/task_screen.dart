@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, unnecessary_import, prefer_const_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -7,19 +9,19 @@ import 'task.dart';
 
 class TaskScreen extends StatefulWidget {
   @override
-  _TaskScreenState createState() => _TaskScreenState();
+  TaskScreenState createState() => TaskScreenState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class TaskScreenState extends State<TaskScreen> {
   late Box<Task> taskBox;
 
   @override
   void initState() {
     super.initState();
-    _initializeHive();
+    initializeHive();
   }
 
-  Future<void> _initializeHive() async {
+  Future<void> initializeHive() async {
     taskBox = await Hive.openBox<Task>('tasks');
     setState(() {});
   }
@@ -31,7 +33,7 @@ class _TaskScreenState extends State<TaskScreen> {
         title: Text(
           'Task Manager',
           style: GoogleFonts.lobster(
-            fontSize: 30,
+            fontSize: 28,
             letterSpacing: 1.2,
             color: Colors.white,
           ),
@@ -39,7 +41,7 @@ class _TaskScreenState extends State<TaskScreen> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.deepPurple.shade500, Colors.blueAccent.shade200],
+              colors: [Colors.purple.shade500, Colors.blueAccent.shade200],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -52,7 +54,7 @@ class _TaskScreenState extends State<TaskScreen> {
             ],
           ),
         ),
-        elevation: 10,
+        elevation: 12,
         centerTitle: true,
       ),
       body: ValueListenableBuilder(
@@ -63,15 +65,16 @@ class _TaskScreenState extends State<TaskScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/empty_tasks.png', // Add an attractive illustration.
-                    height: 200,
+                  Icon(
+                    Icons.task_alt,
+                    size: 150,
+                    color: Colors.grey.shade400,
                   ),
                   SizedBox(height: 20),
                   Text(
                     'No tasks here yet!',
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 22,
                       color: Colors.grey.shade600,
                       fontWeight: FontWeight.w500,
                     ),
@@ -80,14 +83,17 @@ class _TaskScreenState extends State<TaskScreen> {
                   ElevatedButton(
                     onPressed: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => AddEditTaskScreen(taskBox: taskBox)),
+                      MaterialPageRoute(
+                          builder: (_) => AddEditTaskScreen(taskBox: taskBox)),
                     ),
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                       backgroundColor: Colors.teal,
+                      elevation: 8,
                     ),
                     child: Text(
                       'Add Your First Task',
@@ -110,7 +116,7 @@ class _TaskScreenState extends State<TaskScreen> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    task!.isCompleted = !task.isCompleted;
+                    task.isCompleted = !task.isCompleted;
                     task.save();
                   });
                 },
@@ -123,7 +129,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     gradient: LinearGradient(
                       colors: task!.isCompleted
                           ? [Colors.green.shade300, Colors.green.shade600]
-                          : [Colors.white, Colors.grey.shade100],
+                          : [Colors.white, Colors.blueGrey.shade50],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -131,26 +137,29 @@ class _TaskScreenState extends State<TaskScreen> {
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.4),
                         offset: Offset(4, 4),
-                        blurRadius: 10,
+                        blurRadius: 8,
                         spreadRadius: 1,
                       ),
                       BoxShadow(
                         color: Colors.white.withOpacity(0.8),
                         offset: Offset(-3, -3),
-                        blurRadius: 10,
+                        blurRadius: 8,
                         spreadRadius: 1,
                       ),
                     ],
                   ),
                   child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: AnimatedSwitcher(
                       duration: Duration(milliseconds: 300),
                       child: Icon(
                         task.isCompleted
                             ? Icons.check_circle_rounded
                             : Icons.circle_outlined,
-                        color: task.isCompleted ? Colors.white : Colors.blue.shade400,
+                        color: task.isCompleted
+                            ? Colors.white
+                            : Colors.blue.shade400,
                         size: 30,
                         key: ValueKey(task.isCompleted),
                       ),
@@ -170,7 +179,9 @@ class _TaskScreenState extends State<TaskScreen> {
                       task.description,
                       style: GoogleFonts.poppins(
                         fontSize: 14,
-                        color: task.isCompleted ? Colors.white70 : Colors.grey.shade600,
+                        color: task.isCompleted
+                            ? Colors.white70
+                            : Colors.grey.shade600,
                       ),
                     ),
                     trailing: Row(
@@ -181,13 +192,14 @@ class _TaskScreenState extends State<TaskScreen> {
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => AddEditTaskScreen(task: task, taskBox: taskBox),
+                              builder: (_) => AddEditTaskScreen(
+                                  task: task, taskBox: taskBox),
                             ),
                           ),
                         ),
                         IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => _deleteTask(task, index),
+                          onPressed: () => deleteTask(index),
                         ),
                       ],
                     ),
@@ -201,7 +213,8 @@ class _TaskScreenState extends State<TaskScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => AddEditTaskScreen(taskBox: taskBox)),
+          MaterialPageRoute(
+              builder: (_) => AddEditTaskScreen(taskBox: taskBox)),
         ),
         child: Icon(Icons.add, size: 28),
         backgroundColor: Colors.pinkAccent,
@@ -210,16 +223,24 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-void _deleteTask(Task task, int index) {
-  // Directly delete the task
-  task.delete();
+  void deleteTask(int index) {
+    final deletedTask = taskBox.getAt(index);
+    taskBox.deleteAt(index);
 
-  // Show a SnackBar indicating that the task has been deleted
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Task deleted successfully!'),
-      backgroundColor: Colors.redAccent,
-    ),
-  );
-}
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Task deleted successfully!'),
+        backgroundColor: Colors.redAccent,
+        action: SnackBarAction(
+          label: 'Undo',
+          textColor: Colors.white,
+          onPressed: () {
+            if (deletedTask != null) {
+              taskBox.add(deletedTask);
+            }
+          },
+        ),
+      ),
+    );
+  }
 }

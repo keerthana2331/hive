@@ -3,11 +3,10 @@ import 'task.dart';
 
 class TaskAdapter extends TypeAdapter<Task> {
   @override
-  final int typeId = 0; // Ensure the typeId matches the one in the @HiveType annotation
+  final int typeId = 0;
 
   @override
   Task read(BinaryReader reader) {
-    // Read data in the same order it was written
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
@@ -21,9 +20,8 @@ class TaskAdapter extends TypeAdapter<Task> {
 
   @override
   void write(BinaryWriter writer, Task obj) {
-    // Write data in the same order as defined in read
     writer
-      ..writeByte(3) // Number of fields in the class
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)

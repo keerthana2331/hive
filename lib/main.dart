@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'task_adapter.dart';
@@ -5,13 +7,11 @@ import 'task_screen.dart';
 import 'task.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
-  await Hive.initFlutter(); // Initialize Hive for Flutter
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
 
-  // Register the Hive adapter for the Task model
   Hive.registerAdapter(TaskAdapter());
 
-  // Open the 'tasks' box
   await Hive.openBox<Task>('tasks');
 
   runApp(MyApp());
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Task Manager',
-      debugShowCheckedModeBanner: false, // Disable debug banner
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.teal,
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.tealAccent,
         ),
       ),
-      home: TaskScreen(), // Navigate to the TaskScreen widget
+      home: TaskScreen(),
     );
   }
 }
