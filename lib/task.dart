@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 
-// Required for code generation
-
 @HiveType(typeId: 0)
 class Task extends HiveObject {
   @HiveField(0)

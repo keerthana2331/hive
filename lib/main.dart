@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive_1/task_adapter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive_1/task_screen.dart';
-import 'package:hive_1/task.dart';
+import 'task_adapter.dart';
+import 'task_screen.dart';
+import 'task.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
@@ -24,7 +24,39 @@ class MyApp extends StatelessWidget {
       title: 'Task Manager',
       debugShowCheckedModeBanner: false, // Disable debug banner
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        primarySwatch: Colors.teal,
+        scaffoldBackgroundColor: Colors.grey.shade200,
+        textTheme: TextTheme(
+          titleLarge: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.teal.shade900,
+          ),
+          bodyLarge: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 16,
+            color: Colors.grey.shade800,
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          elevation: 5,
+          backgroundColor: Colors.teal.shade300,
+          titleTextStyle: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+          centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.teal,
+          elevation: 10,
+          splashColor: Colors.tealAccent,
+        ),
       ),
       home: TaskScreen(), // Navigate to the TaskScreen widget
     );
